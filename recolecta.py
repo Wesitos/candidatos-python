@@ -7,7 +7,6 @@ import json
 import Queue
 from filtro import Filtro
 
-
 class Recolector(threading.Thread):
     """Realiza las peticiones
     """
@@ -19,7 +18,7 @@ class Recolector(threading.Thread):
                       "CandidatoListarPorID"),
         "familia": (base_url + "declaracion.asmx/" +
                     "CandidatoFamiliaListarPorCandidato"),
-        "otra_experiencia": (base_url + "declaracion.asmx/" +
+        "otraExperiencia": (base_url + "declaracion.asmx/" +
                              "CandidatoAdicionalListarPorCandidato"),
         "observaciones": (base_url + "simulador.asmx/" +
                           "Soporte_CandidatoAnotMarginal"),
@@ -27,9 +26,9 @@ class Recolector(threading.Thread):
                      "IngresoListarPorCandidato"),
         "experiencia": (base_url + "declaracion.asmx/" +
                         "CandidatoExperienciaListarPorCandidato"),
-        "educacion_superior": (base_url + "declaracion.asmx/" +
+        "educacionSuperior": (base_url + "declaracion.asmx/" +
                                "EducacionSuperiorListarPorCandidato"),
-        "educacion_basica": (base_url + "declaracion.asmx/" +
+        "educacionBasica": (base_url + "declaracion.asmx/" +
                              "EducacionBasicaListarPorCandidato"),
         "militancia": (base_url + "declaracion.asmx/" +
                        "RenunciasOPListarPorCandidato"),

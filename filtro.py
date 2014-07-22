@@ -91,7 +91,7 @@ class Filtro (object):
         return lista_experiencia
 
     @staticmethod
-    def f_educacion_basica(data):
+    def f_educacionBasica(data):
         data = data["d"]
         if (not data):
             return None
@@ -143,13 +143,13 @@ class Filtro (object):
 
                 lista_secundaria.append(dic_secundaria)
 
-            return {
-                "primaria": lista_primaria if lista_primaria else None,
-                "secundaria": lista_secundaria if lista_secundaria else None,
-                }
+        return { "primaria": (lista_primaria
+                              if lista_primaria else None),
+                 "secundaria": (lista_secundaria
+                                if lista_secundaria else None)}
 
     @staticmethod
-    def f_educacion_superior(data):
+    def f_educacionSuperior(data):
         data = data["d"]
         if (not data):
             return None
@@ -358,7 +358,7 @@ class Filtro (object):
         return lista_civil
 
     @staticmethod
-    def f_otra_experiencia(data):
+    def f_otraExperiencia(data):
         data = data["d"]
         if (not data):
             return None
