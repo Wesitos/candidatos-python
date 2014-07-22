@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: iso-8859-15 -*-
+
 class Filtro (object):
     """El procesamiento de la data la implementamos en otra clase
     para mantener el orden"""
@@ -25,11 +28,11 @@ class Filtro (object):
             "apellidoPaterno": data["strAPaterno"].upper(),
             "apellidoMaterno": data["strAPaterno"].upper(),
             "nombres": data["strNombres"].upper(),
-            "sexo": "M" if data["intID_Sexo"]==1 else "F",
+            "sexo": "M" if data["intId_Sexo"] == 1 else "F",
             "email": data["strCorreo"],
         }
         dic_nacimiento = {
-            "fecha": "/".join([fec_nac[0:2],fec_nac[2:4],fec_nac[4:]]),
+            "fecha": "/".join([fec_nac[0:2], fec_nac[2:4], fec_nac[4:]]),
             "pais": data["strPais"],
             "departamento": ubi_nac_BE["strDepartamento"],
             "provincia": ubi_nac_BE["strProvincia"],
@@ -40,7 +43,7 @@ class Filtro (object):
             "departamento": ubi_res_BE["strDepartamento"],
             "provincia": ubi_res_BE["strProvincia"],
             "distrito": ubi_res_BE["strDistrito"],
-            "tiempo": data["strTiempoResidencia"],
+            "tiempo": data["strTiempo_Residencia"],
         }
         return {
             "postulacion": dic_postulacion,
@@ -72,11 +75,11 @@ class Filtro (object):
         lista_experiencia = []
         for item in data:
             ubi_exp = item["objUbigeoExperiencia"]
-            dic_experiencia ={
+            dic_experiencia = {
                 "empleador": item["strEmpleador"],
-                "sector": item["objTipoSectorBe"]["strNombre_Sector"],
+                "sector": item["objTipoSectorBE"]["strNombre_Sector"],
                 "cargo": item["intInicioAnio"],
-                "fin": item["intFinAnio"] if item["intFinAnio"]  else "AHORA",
+                "fin": item["intFinAnio"] if item["intFinAnio"] else "AHORA",
                 "inicio": item["intInicioAnio"],
                 "departamento": ubi_exp["strDepartamento"],
                 "provincia": ubi_exp["strProvincia"],
@@ -95,45 +98,47 @@ class Filtro (object):
         lista_secundaria = []
         for item in data:
             if (item["intTipoEducacion"] == 1):
-                #Primaria
+                # Primaria
                 ubi_pri = item["objUbigeoPrimaria"]
                 dic_primaria = {
                     "instEducativa": item["strCentroPrimaria"],
                     "concluido": int(item["strPrimaria"]),
                     "inicio": item["intAnioInicioPrimaria"],
-                    "fin": item["intAnioFinPrimaria"] if item["intAnioFinPrimaria"] else None,
+                    "fin": (item["intAnioFinPrimaria"]
+                            if item["intAnioFinPrimaria"] else None),
                     "pais": item["strPais"]
                 }
-                if( item["strFgExtranjero"] == "1"):
+                if(item["strFgExtranjero"] == "1"):
                     dic_primaria["departamento"] = None
                     dic_primaria["provincia"] = None
                     dic_primaria["distrito"] = None
                 else:
                     dic_primaria["departamento"] = ubi_pri["strDepartamento"]
                     dic_primaria["provincia"] = ubi_pri["strProvincia"]
-                    dic_primaria["distrito"] = ubi_pri["setDistrito"]
+                    dic_primaria["distrito"] = ubi_pri["strDistrito"]
 
                 lista_primaria.append(dic_primaria)
 
             else:
-                #Secundaria
+                # Secundaria
                 ubi_pri = item["objUbigeoSecundaria"]
                 dic_secundaria = {
                     "instEducativa": item["strCentroSecundaria"],
                     "concluido": int(item["strSecundaria"]),
                     "inicio": item["intAnioInicioSecundaria"],
-                    "fin": item["intAnioFinSecundaria"] if item["intAnioFinSecundaria"] else None,
+                    "fin": (item["intAnioFinSecundaria"]
+                            if item["intAnioFinSecundaria"] else None),
                     "pais": item["strPais"]
                 }
-                
-                if( item["strFgExtranjero"] == "1"):
+
+                if(item["strFgExtranjero"] == "1"):
                     dic_secundaria["departamento"] = None
                     dic_secundaria["provincia"] = None
                     dic_secundaria["distrito"] = None
                 else:
                     dic_secundaria["departamento"] = ubi_pri["strDepartamento"]
                     dic_secundaria["provincia"] = ubi_pri["strProvincia"]
-                    dic_secundaria["distrito"] = ubi_pri["setDistrito"]
+                    dic_secundaria["distrito"] = ubi_pri["strDistrito"]
 
                 lista_secundaria.append(dic_secundaria)
 
@@ -152,7 +157,7 @@ class Filtro (object):
         lista_postgrado = []
         for item in data:
             if (item["objTipoEstudioBE"]["intTipo"] == 1):
-                #Tecnico
+                # Tecnico
                 ubi_BE = item["objUbigeoBE"]
                 dic_tecnico = {
                     "instEducativa": item["strNombreCentro"],
@@ -160,77 +165,89 @@ class Filtro (object):
                     "curso": item["strNombreCarrera"],
                     "concluido": int(item["strFgConcluido"]),
                     "inicio": item["intAnioInicio"],
-                    "fin": item["intAnioFinal"] if item["intAnioFinal"] else None,
+                    "fin": (item["intAnioFinal"]
+                            if item["intAnioFinal"] else None),
                     "pais": item["strPais"],
                 }
-                
-                if( item["strFgExtranjero"] == "1"):
+
+                if(item["strFgExtranjero"] == "1"):
                     dic_tecnico["departamento"] = None
                     dic_tecnico["provincia"] = None
                     dic_tecnico["distrito"] = None
-                else: 
+                else:
                     dic_tecnico["departamento"] = ubi_BE["strDepartamento"]
                     dic_tecnico["provincia"] = ubi_BE["strProvincia"]
-                    dic_tecnico["distrito"] = ubi_BE["setDistrito"]
-                
+                    dic_tecnico["distrito"] = ubi_BE["strDistrito"]
+
                 lista_tecnico.append(dic_tecnico)
 
             if (item["objTipoEstudioBE"]["intTipo"] == 3):
-                #Universitario
+                # Universitario
                 ubi_BE = item["objUbigeoBE"]
+                if(item["strFgExtranjero"] == "1"):
+                    depa = None
+                    prov = None
+                    dist = None
+                else:
+                    depa = ubi_BE["strDepartamento"]
+                    prov = ubi_BE["strProvincia"]
+                    dist = ubi_BE["strDistrito"]
+
                 dic_universitario = {
                     "instEducativa": item["strNombreCentro"],
                     "facultad": item["strNombreEstudio"],
                     "carrera": item["strNombreCarrera"],
                     "concluido": int(item["strFgConcluido"]),
                     "inicio": item["intAnioInicio"],
-                    "fin": item["intAnioFinal"] if item["intAnioFinal"] else None,
+                    "fin": (item["intAnioFinal"]
+                            if item["intAnioFinal"] else None),
                     "pais": item["strPais"],
                     "gradoTitulo": item["strTipoGrado"],
+                    "departamento": depa,
+                    "provincia": prov,
+                    "distrito": dist,
                 }
-                
-                if( item["strFgExtranjero"] == "1"):
-                    dic_universitario["departamento"] = None
-                    dic_universitario["provincia"] = None
-                    dic_universitario["distrito"] = None
-                else: 
-                    dic_universitario["departamento"] = ubi_BE["strDepartamento"]
-                    dic_universitario["provincia"] = ubi_BE["strProvincia"]
-                    dic_universitario["distrito"] = ubi_BE["setDistrito"]
-                
+
                 lista_universitario.append(dic_universitario)
 
             else:
-                #Postgrado
+                # Postgrado
                 ubi_BE = item["objUbigeoBE"]
-                dic_tipo = {1: "Maestria",2: "Doctorado",3:item["strOtroTipoDocumento"]}
+                if(item["strFgExtranjero"] == "1"):
+                    depa = None
+                    prov = None
+                    dist = None
+                else:
+                    depa = ubi_BE["strDepartamento"]
+                    prov = ubi_BE["strProvincia"]
+                    dist = ubi_BE["strDistrito"]
+
+                dic_tipo = {0: None,
+                            1: "Maestria",
+                            2: "Doctorado",
+                            3: item["strOtroTipoDocumento"]}
 
                 dic_postgrado = {
                     "instEducativa": item["strNombreCentro"],
                     "especialidad": item["strNombreEstudio"],
                     "concluido": int(item["strFgConcluido"]),
                     "inicio": item["intAnioInicio"],
-                    "fin": item["intAnioFinal"] if item["intAnioFinal"] else None,
+                    "fin": (item["intAnioFinal"]
+                            if item["intAnioFinal"] else None),
                     "pais": item["strPais"],
                     "gradoTitulo": item["strTipoGrado"],
                     "tipo": dic_tipo[item["intTipoPostgrado"]]
                 }
 
-                if( item["strFgExtranjero"] == "1"):
-                    dic_postgrado["departamento"] = None
-                    dic_postgrado["provincia"] = None
-                    dic_postgrado["distrito"] = None
-                else: 
-                    dic_postgrado["departamento"] = ubi_BE["strDepartamento"]
-                    dic_postgrado["provincia"] = ubi_BE["strProvincia"]
-                    dic_postgrado["distrito"] = ubi_BE["setDistrito"]
+                lista_postgrado.append(dic_postgrado)
 
-                    lista_postgrado.append(dic_postgrado)
-            
         return {
-            "tecnico": lista_tecnico if lista_tecnico else None,
-            "universitario": lista_universitario if lista_universitario else None,
-            "postgrado": lista_postgrado if lista_postgrado else None,
+            "tecnico": (lista_tecnico
+                        if lista_tecnico else None),
+            "universitario": (lista_universitario
+                              if lista_universitario else None),
+            "postgrado": (lista_postgrado
+                          if lista_postgrado else None),
         }
 
     @staticmethod
@@ -245,7 +262,8 @@ class Filtro (object):
                 "ambito": item["objAmbitoBE"]["strAmbito"],
                 "cargo": item["strNombre_Cargo"],
                 "inicio": item["intAnio_Inicio"],
-                "fin": item["intAnio_Final"] if item["intAnio_Final"] else None,
+                "fin": (item["intAnio_Final"]
+                        if item["intAnio_Final"] else None),
             }
             lista_partidario.append(dic_partidario)
 
@@ -257,21 +275,29 @@ class Filtro (object):
         if (not data):
             return None
         lista_eleccion = []
-        for iter in data:
+        for item in data:
             ubi_car_pop_BE = item["objUbigeoCargoPopularBE"]
             dic_eleccion = {
-               "orgPolitica": item["strOrganizacionPolitica"],
+                "orgPolitica": item["strOrganizacionPolitica"],
                 "ambito": item["objAmbitoBE"]["strAmbito"],
                 "procesoElectoral": item["strProcesoElectoral"],
-                "inicio": item["intAnio_Inicio"],
-                "fin": item["intAnio_Final"] if item["intAnio_Final"] else None,
-                "departamento": ubi_car_pop_BE["strDepartamento"] if ubi_car_pop_BE["strDepartamento"] else None,
-                "provincia": ubi_car_pop_BE["strProvincia"] if ubi_car_pop_BE["strProvincia"] else None,
-                "distrito": ubi_car_pop_BE["strDistrito"] if ubi_car_pop_BE["strDistrito"] else None,
-                "cargo": item["strOtroCargo"] if item["objAmbitoBE"]["intidAmbito"]==6 else item["objCargoAutoridadBE"]["strCargoAutoridad"],
+                "inicio": item["intAnioInicio"],
+                "fin": (item["intAnioFinal"]
+                if item["intAnioFinal"] else None),
+                "departamento": (ubi_car_pop_BE["strDepartamento"]
+                                 if ubi_car_pop_BE
+                                 ["strDepartamento"] else None),
+                "provincia": (ubi_car_pop_BE["strProvincia"]
+                              if ubi_car_pop_BE["strProvincia"] else None),
+                "distrito": (ubi_car_pop_BE["strDistrito"]
+                             if ubi_car_pop_BE["strDistrito"] else None),
+                "cargo": (item["strOtroCargo"]
+                          if item["objAmbitoBE"]["intIdAmbito"] == 6
+                          else item["objCargoAutoridadBE"]
+                          ["strCargoAutoridad"]),
             }
             lista_eleccion.append(dic_eleccion)
-        
+
         return lista_eleccion
 
     @staticmethod
@@ -284,7 +310,7 @@ class Filtro (object):
             dic_renuncias = {
                 "orgPolitica": item["strOrgPolitica"],
                 "inicio": item["intAnioInicio"],
-                "fin": item["intAniofinal"] if item["intAniofinal"] else None,
+                "fin": item["intAnioFinal"] if item["intAnioFinal"] else None,
             }
             lista_renuncias.append(dic_renuncias)
 
@@ -300,8 +326,11 @@ class Filtro (object):
             fecha = item[strFecha_Sentencia]
             dic_penal = {
                 "expediente": item["StrExpediente"],
-                "fechaSentencia": "/".join([fecha[0:2],fecha[2:4],fecha[4:]]),
-                "juzgado": item["strJuzagado"], #Ni idea si esta bien o mal
+                "fechaSentencia": "/".join([fecha[0:2],
+                                            fecha[2:4],
+                                            fecha[4:]]),
+                # Ni idea si esta bien o mal
+                "juzgado": item["strJuzagado"],
                 "delito": item["strAcusacion_Penal"],
                 "fallo": item["strFallo"],
             }
@@ -311,14 +340,14 @@ class Filtro (object):
 
     @staticmethod
     def f_civil(data):
-        data=data["d"]
+        data = data["d"]
         if (not data):
             return None
         lista_civil = []
         for item in data:
             dic_civil = {
                 "materia": item["objTipoMateriaBE"]["strMateria"],
-                "expediente": item["StrExpediente"],
+                "expediente": item["strExpediente"],
                 "juzgado": item["strJuzgado"],
                 "materia": item["strMateria"],
                 "fallo": item["strFallo"],
@@ -334,10 +363,10 @@ class Filtro (object):
             return None
         lista_otra_exp = []
         for item in data:
-            dic_otra_exp ={
+            dic_otra_exp = {
                 "cargo": item["strCargo"],
                 "entidad": item["strInstitucion"],
-                "inicio": item["intanio_Inicio"],
+                "inicio": item["intAnio_Inicio"],
                 "fin": item["intAnio_Final"] if item["intAnio_Final"] else None
             }
             lista_otra_exp.append(dic_otra_exp)
@@ -347,11 +376,11 @@ class Filtro (object):
     @staticmethod
     def f_ingresos(data):
         data = data["d"]
-        total = data["floRemuneracionTotal"] +
-        data["floRentaTotal"] + data["floOtrosTotal"]
+        total = (data["floRemuneracionTotal"] +
+        data["floRentaTotal"] + data["floOtrosTotal"])
 
         dic_ingresos = {
-            "remuneracion":{
+            "remuneracion": {
                 "publico": data["floRemuneracionPublico"],
                 "privado": data["floRemuneracionPrivado"],
                 "total":   data["floRemuneracionTotal"],
@@ -364,25 +393,25 @@ class Filtro (object):
             "otros": {
                 "publico": data["floOtrosPublico"],
                 "privado": data["floOtrosPrivado"],
-                "total":   data["FloOtrosTotal"],
+                "total":   data["floOtrosTotal"],
             },
             "total": total,
         }
-        
+
         return dic_ingresos
 
     @staticmethod
     def f_bienes(data):
-        data=data["d"]
+        data = data["d"]
         if (not data):
             return None
         lista_muebles = []
         lista_inmuebles = []
         for item in data:
-            if item["intId_Bien"]==1:
-                #Inmuebles
+            if item["intId_Bien"] == 1:
+                # Inmuebles
                 dic_inmuebles = {
-                    "tipo": item["strNombreBien"],
+                    "tipo": item["strNombre_Bien"],
                     "direccion": item["strDescripcion_Bien"],
                     "registro": item["strCaracteristicas_Bien"],
                     "valor": item["floValor_Bien"],
@@ -390,20 +419,20 @@ class Filtro (object):
                 lista_inmuebles.append(dic_inmuebles)
             else:
                 dic_muebles = {
-                    #Bien
-                    "bien": "Vehiculo" if item["intId_Bien"]==2 else "Otro"
-                    #Tipo de bien
+                    # Bien
+                    "bien": "Vehiculo" if item["intId_Bien"] == 2 else "Otro",
+                    # Tipo de bien
                     "tipo": item["strNombre_Bien"],
-                    #DescripciÃ³n / Marca-Modelo-AÃ±o
+                    # Descripción / Marca-Modelo-Año
                     "descripcion": item["strDescripcion_Bien"],
-                    #Placa / Caracteristicas
+                    # Placa / Caracteristicas
                     "caracteristicas": item["strCaracteristicas_Bien"],
-                    #Valor S/.
+                    # Valor S/.
                     "valor": item["floValor_Bien"],
                 }
 
         return {
-            "muebles": lista_muebles if lista_muebles else None
+            "muebles": lista_muebles if lista_muebles else None,
             "inmuebles": lista_inmuebles if lista_inmuebles else None
         }
 
@@ -414,7 +443,7 @@ class Filtro (object):
             return None
         lista_acreencias = []
         for item in data:
-            dic_acreencias ={
+            dic_acreencias = {
                 "detalle": item["strDetalleAcreencia"],
                 "monto": item["floTotalDeuda"],
             }
@@ -435,4 +464,3 @@ class Filtro (object):
             lista_observaciones.append(dic_observaciones)
 
         return lista_observaciones
-
