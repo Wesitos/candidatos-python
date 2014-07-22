@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-15 -*-
 
+
 class Filtro (object):
     """El procesamiento de la data la implementamos en otra clase
     para mantener el orden"""
@@ -283,7 +284,7 @@ class Filtro (object):
                 "procesoElectoral": item["strProcesoElectoral"],
                 "inicio": item["intAnioInicio"],
                 "fin": (item["intAnioFinal"]
-                if item["intAnioFinal"] else None),
+                        if item["intAnioFinal"] else None),
                 "departamento": (ubi_car_pop_BE["strDepartamento"]
                                  if ubi_car_pop_BE
                                  ["strDepartamento"] else None),
@@ -377,7 +378,7 @@ class Filtro (object):
     def f_ingresos(data):
         data = data["d"]
         total = (data["floRemuneracionTotal"] +
-        data["floRentaTotal"] + data["floOtrosTotal"])
+                 data["floRentaTotal"] + data["floOtrosTotal"])
 
         dic_ingresos = {
             "remuneracion": {

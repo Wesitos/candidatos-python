@@ -10,7 +10,7 @@ class Maestro(object):
 
     Recibe el numero de hilos a generar, la clase de la cual se instanciaran
     estos (debe heredar de threading.Thread), un iterador para los parametros
-    con que se contruiran los threads y un generador de listas de tareas 
+    con que se contruiran los threads y un generador de listas de tareas
     (parametros que necesitan los threads para trabajar y que van pidiendo
     constantemente). Una tarea solo puede mandarse una vez"""
 
@@ -22,7 +22,6 @@ class Maestro(object):
     activo = False
 
     def __init__(self, n_threads, ClaseThread, thread_params, gen_tasks):
-        self.threads_default = threading.active_count()
         self.n_threads = n_threads
         self.thread_params = thread_params
         self.gen_tasks = gen_tasks
@@ -32,9 +31,9 @@ class Maestro(object):
         """Crea e inicia los threads"""
         if(not self.activo):
             self.activo = True
-            self.lista_threads = [self.ClaseThread(maestro=self,*y) for x,y 
+            self.lista_threads = [self.ClaseThread(maestro=self, *y) for x, y
                                   in zip(range(self.n_threads),
-                                        self.thread_params)]
+                                  self.thread_params)]
             for hilo in self.lista_threads:
                 hilo.setDaemon(True)
                 hilo.start()
@@ -52,14 +51,14 @@ class Maestro(object):
         with self.lock_get_task:
             return self.gen_tasks.next()
 
-
     def put_task(self, *args):
         """Llama a la funcion estatica put_task de ClaseThread"""
         with self.lock_put_task:
             self.ClaseThread.put_task(*args)
 
     def finalizado(self):
-        """Llamado por un thread o el mismo maestro para indicar que ha finalizado"""
+        """Llamado por un thread o el mismo maestro para
+        indicar que ha finalizado"""
         with self.lock_finalizado:
             pass
 

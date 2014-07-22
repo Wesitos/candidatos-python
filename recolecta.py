@@ -47,7 +47,7 @@ class Recolector(threading.Thread):
                        "EgresosListarPorCandidato"),
     }
 
-    def __init__(self,maestro):
+    def __init__(self, maestro):
         threading.Thread.__init__(self)
         # Puede variar
         self.maestro = maestro
@@ -83,10 +83,10 @@ class Recolector(threading.Thread):
                     err_msg_list.append(":: Esta conectado a internet?")
                 if errno == 104:
                     err_msg_list.append(":: Connection reset by peer")
-                maestro.imprime()
+                self.maestro.imprime(err_msg_list)
                 continue
             except Exception as e:
-                self.maestro.imprime("hilo: Error",e)
+                self.maestro.imprime("hilo: Error", e)
                 continue
             else:
                 return r.json()
@@ -99,35 +99,34 @@ class Recolector(threading.Thread):
         dic_candidato = {"id": id_candidato}
         cont = self.genera_payload(id_candidato)
         # Verifica si el id es valido
-        j_principal= self.realiza_peticion(
+        j_principal = self.realiza_peticion(
             "principal", id_candidato, cont)
-        
+
         d_principal = getattr(Filtro, "f_principal")(j_principal)
         if (not d_principal):
             return None
         else:
-            dic_candidato["principal"]= d_principal
+            dic_candidato["principal"] = d_principal
 
         for k in self.dic_urls.keys():
             if k == "principal":
                 continue
             j_dato = self.realiza_peticion(k, id_candidato, cont)
             dic_candidato[k] = getattr(Filtro, "f_"+k)(j_dato)
-        
+
         return dic_candidato
 
-
-    def run(self):        
+    def run(self):
         while True:
             try:
                 task = self.maestro.get_task()
-                self.maestro.imprime("Tarea obtenida",task)
+                self.maestro.imprime("Tarea obtenida", task)
                 datos = self.descarga_candidato(*task)
                 self.maestro.put_task(datos)
             except StopIteration:
                 self.maestro.imprime("Hilo: Terminado")
                 break
-            
+
     @staticmethod
     def put_task(dic_datos):
         print dic_datos

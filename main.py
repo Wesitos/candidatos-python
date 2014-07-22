@@ -9,10 +9,10 @@ from Queue import Queue
 gen_params = (tuple() for x in range(5))
 
 # Generador de tareas
-gen_tasks = ((x,) for x in range(0,20))
+gen_tasks = ((x,) for x in range(104272, 104280))
 
 # Crea objeto maestro
-master = Maestro(3, Recolector, gen_params, gen_tasks)
+master = Maestro(5, Recolector, gen_params, gen_tasks)
 
 # Inicia
 print "Iniciando"
