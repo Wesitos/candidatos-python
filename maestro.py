@@ -14,47 +14,46 @@ class Maestro(object):
     (parametros que necesitan los threads para trabajar y que van pidiendo
     constantemente). Una tarea solo puede mandarse una vez"""
 
-    lock_print = threading.Lock()
-    lock_get_task = threading.Lock()
-    lock_finalizado = threading.Lock()
-    lock_put_task = threading.Lock()
-    lista_threads = []
-    activo = False
-
-    def __init__(self, n_threads, ClaseThread, thread_params, gen_tasks):
+    def __init__(self, n_threads, ClaseThread, done, thread_params, gen_tasks):
+        self.lock_print = threading.Lock()
+        self.lock_get_task = threading.Lock()
+        self.lock_finalizado = threading.Lock()
         self.n_threads = n_threads
         self.thread_params = thread_params
         self.gen_tasks = gen_tasks
         self.ClaseThread = ClaseThread
+        self.activo = False
+        if !ClaseThread.block_put_task:
+            self.lock_put_task = None
 
     def iniciar(self, block=True):
         """Crea e inicia los threads"""
         if(not self.activo):
             self.activo = True
-            self.lista_threads = [self.ClaseThread(maestro=self, *y) for x, y
-                                  in zip(range(self.n_threads),
-                                  self.thread_params)]
+            self.lista_threads = [
+                self.ClaseThread(maestro=self, *y) for x, y
+                in zip(range(self.n_threads), self.thread_params)]
             for hilo in self.lista_threads:
                 hilo.setDaemon(True)
                 hilo.start()
             # Bloquea la ejecucion
             if(block):
-                self.imprime("Maestro: Bloqueando")
-                for hilo in self.lista_threads:
-                    hilo.join()
+                try:
+                    self.imprime("Maestro: Bloqueando")
+                    for hilo in self.lista_threads:
+                        hilo.join()
+                except KeyboardInterrupt:
+                    for hilo in self.lista_threads:
+                            hilo.exit()
+                    return
 
         else:
             return
 
     def get_task(self):
-        """Llamado por un thread para adquirir una nueva tarea"""
+        """Llamado por un thread para adquirir una nueva tarea"""        
         with self.lock_get_task:
             return self.gen_tasks.next()
-
-    def put_task(self, *args):
-        """Llama a la funcion estatica put_task de ClaseThread"""
-        with self.lock_put_task:
-            self.ClaseThread.put_task(*args)
 
     def finalizado(self):
         """Llamado por un thread o el mismo maestro para

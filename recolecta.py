@@ -1,15 +1,19 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-15 -*-
-
 import threading
 import requests as req
 import json
 import Queue
 from filtro import Filtro
+from pymongo import MongoClient
+
+db= MongoClient()
+collection = "hojas-vida"
 
 class Recolector(threading.Thread):
     """Realiza las peticiones
     """
+    block_put_task = "false"
     headers = {"Content-Type": "application/json; charset=UTF-8",
                "Accept": "application/json"}
     base_url = "http://200.48.102.67/pecaoe/servicios/"
@@ -46,9 +50,9 @@ class Recolector(threading.Thread):
                        "EgresosListarPorCandidato"),
     }
 
-    def __init__(self, maestro):
-        threading.Thread.__init__(self)
-        # Puede variar
+    def __init__(self, maestro, t_id=None):
+        thread_name = "Hilo %d"%t_id if t_id else None
+        threading.Thread.__init__(self, name=thread_name)
         self.maestro = maestro
 
     def genera_payload(self, id_Candidato):
@@ -88,24 +92,28 @@ class Recolector(threading.Thread):
                 self.maestro.imprime("hilo: Error", e)
                 continue
             else:
-                return r.json()
-
+                try:
+                    return r.json()
+                except ValueError:
+                    
     def descarga_candidato(self, id_candidato):
         """Descarga los datos y los filtra
 
         Si es un id valido, devuelve un diccionario de los datos.
         En caso contrario devuelve None"""
-        dic_candidato = {"id": id_candidato}
+        dic_candidato = {"_id": id_candidato}
         cont = self.genera_payload(id_candidato)
         # Verifica si el id es valido
         j_principal = self.realiza_peticion(
             "principal", id_candidato, cont)
 
-        d_principal = getattr(Filtro, "f_principal")(j_principal)
-        if (not d_principal):
-            return None
+        dic_principal = getattr(Filtro, "f_principal")(j_principal)
+        if (not dic_principal):
+            dic_candidato["ok"] = False
+            return dic_candidato
         else:
-            dic_candidato["principal"] = d_principal
+            dic_candidato["ok"] = True
+            dic_candidato.update(dic_principal)
 
         for k in self.dic_urls.keys():
             if k == "principal":
@@ -128,4 +136,6 @@ class Recolector(threading.Thread):
 
     @staticmethod
     def put_task(dic_datos):
-        print dic_datos
+        collect = db[collection]
+        item_id = collect.insert(dic_datos)
+        maestro.imprime("Insertado id:",item_id)
