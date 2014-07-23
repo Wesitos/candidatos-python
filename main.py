@@ -7,7 +7,7 @@ database = "local"
 collection = "hojasVida"
 
 def db_inserta(dato):
-    db = client["default"]
+    db = client[database]
     collect = db[collection]
     item_id = collect.insert(dato)
     with lock_print:
@@ -49,7 +49,7 @@ def genera_threads(n_threads, iter_get_params, foo_do, foo_done):
             for _ in range(n_threads)]
 
 
-def descarga_varios(id_inicio, id_fin, n_threads=5):
+def descarga_varios(id_inicio, id_fin, n_threads=2):
     iter_params = range(id_inicio, id_fin)
     kargs = {"n_threads": n_threads,
              "iter_get_params": iter_params,
@@ -68,4 +68,4 @@ def descarga_varios(id_inicio, id_fin, n_threads=5):
 
 #-----
 if __name__ == "__main__":
-    descarga_varios(1, 5)
+    descarga_varios(200, 300)

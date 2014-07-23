@@ -66,21 +66,27 @@ def realiza_peticion(key,id_candidato, timeout=1):
     while True:
         try:
             r = req.post(url, **kargs)
-        except req.Timeout:
+        except req.exceptions.Timeout:
             imprime("Timeout error")
             continue
-        except req.ConnectionError as error:
+        except req.exceptions.ConnectionError as error:
             errno = error.errno
             err_msg  = "ConnectionError %d"%errno
             if errno == 101:
                 err_msg += (": Esta conectado a internet?")
             imprime(err_msg)
-            continue
-        except Exception as e:
-            imprime("Excepcion "+ str(e) )
             time.sleep(0.5)
             continue
+        # except Exception as e:
+        #     imprime("Excepcion "+ str(e) )
+        #     time.sleep(0.5)
+        #     continue
         else:
+            if r.text.find("Attack Detected") != -1:
+                imprime(r.text)
+                imprime("Ataque detectado!! A dormir")
+                time.sleep(60)
+                continue
             return r.json()
 
 def get_data(key, id_cand):

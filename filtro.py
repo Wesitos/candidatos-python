@@ -324,9 +324,9 @@ class Filtro (object):
             return None
         lista_penal = []
         for item in data:
-            fecha = item[strFecha_Sentencia]
+            fecha = item["strFecha_Sentencia"]
             dic_penal = {
-                "expediente": item["StrExpediente"],
+                "expediente": item["strExpediente"],
                 "fechaSentencia": "/".join([fecha[0:2],
                                             fecha[2:4],
                                             fecha[4:]]),
