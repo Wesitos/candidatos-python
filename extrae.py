@@ -71,16 +71,16 @@ def realiza_peticion(key,id_candidato, timeout=1):
             continue
         except req.exceptions.ConnectionError as error:
             errno = error.errno
-            err_msg  = "ConnectionError %d"%errno
+            err_msg  = "ConnectionError"
             if errno == 101:
                 err_msg += (": Esta conectado a internet?")
             imprime(err_msg)
             time.sleep(0.5)
             continue
-        # except Exception as e:
-        #     imprime("Excepcion "+ str(e) )
-        #     time.sleep(0.5)
-        #     continue
+        except Exception as e:
+            imprime("Excepcion "+ str(e) )
+            time.sleep(0.5)
+            continue
         else:
             if r.text.find("Attack Detected") != -1:
                 imprime(r.text)
@@ -92,8 +92,8 @@ def realiza_peticion(key,id_candidato, timeout=1):
 def get_data(key, id_cand):
     """Descarga y filtra data"""
     raw_data = realiza_peticion(key, id_cand)
-    d_data = getattr(Filtro,"f_"+key)(raw_data)
-    return d_data
+    # d_data = getattr(Filtro,"f_"+key)(raw_data)
+    return raw_data
 
 def descarga_candidato(id_cand):
     """Descarga los datos y los filtra

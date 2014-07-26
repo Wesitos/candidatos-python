@@ -1,17 +1,21 @@
 from pymongo import MongoClient
 from extrae import descarga_candidato, lock_print
 import threading
+import time
 
 client = MongoClient()
-database = "local"
-collection = "hojasVida"
+database = "candidatos"
+collection = "candRaw"
 
-def db_inserta(dato):
+def db_inserta(dato,lala=[0]):
     db = client[database]
+    lala[0]+=1
     collect = db[collection]
     item_id = collect.insert(dato)
     with lock_print:
-        print "Insertado id: %d"%item_id
+        if not lala[0]%20:
+            print "Insertado id: %d"%item_id
+            
 
 class LockedIterator(object):
     def __init__(self, it):
@@ -48,9 +52,11 @@ def genera_threads(n_threads, iter_get_params, foo_do, foo_done):
     return [threading.Thread(target=target)
             for _ in range(n_threads)]
 
+    
 
 def descarga_varios(id_inicio, id_fin, n_threads=2):
-    iter_params = range(id_inicio, id_fin)
+    #Itera de manera inversa
+    iter_params = range(id_fin, id_inicio,-1)
     kargs = {"n_threads": n_threads,
              "iter_get_params": iter_params,
              "foo_do": descarga_candidato,
@@ -60,12 +66,17 @@ def descarga_varios(id_inicio, id_fin, n_threads=2):
     for hilo in lista_threads:
         hilo.setDaemon(True)
         hilo.start()
-    for hilo in lista_threads:
+
+    while True:
         try:
-            hilo.join()
+            if not max([x.isAlive() for x in lista_threads]):
+                break
+            time.sleep(0.1)
         except KeyboardInterrupt:
-            return
+                return
 
 #-----
 if __name__ == "__main__":
-    descarga_varios(200, 300)
+    #descarga_varios(0, 116827, 1)
+    descarga_varios(0, 116369, 1)
+
