@@ -1,10 +1,10 @@
-#!/usr/bin/python
 # -*- coding: iso-8859-15 -*-
 
 
 class Filtro (object):
-    """El procesamiento de la data la implementamos en otra clase
-    para mantener el orden"""
+    """Clase de funciones estaticas para filtrar la data
+
+    Una funcion para cada api"""
     @staticmethod
     def f_principal(data):
         data = data["d"]
@@ -143,10 +143,10 @@ class Filtro (object):
 
                 lista_secundaria.append(dic_secundaria)
 
-        return { "primaria": (lista_primaria
-                              if lista_primaria else None),
-                 "secundaria": (lista_secundaria
-                                if lista_secundaria else None)}
+        return {"primaria": (lista_primaria
+                             if lista_primaria else None),
+                "secundaria": (lista_secundaria
+                               if lista_secundaria else None)}
 
     @staticmethod
     def f_educacionSuperior(data):
@@ -330,7 +330,6 @@ class Filtro (object):
                 "fechaSentencia": "/".join([fecha[0:2],
                                             fecha[2:4],
                                             fecha[4:]]),
-                # Ni idea si esta bien o mal
                 "juzgado": item["strJuzagado"],
                 "delito": item["strAcusacion_Penal"],
                 "fallo": item["strFallo"],
@@ -463,5 +462,4 @@ class Filtro (object):
                 "anotacion": item["strObservacionCompleto"],
             }
             lista_observaciones.append(dic_observaciones)
-
         return lista_observaciones

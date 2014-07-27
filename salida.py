@@ -1,3 +1,4 @@
+# Ejemplo de diccionario de candidato filtrado
 {
     "ok": True,
     'bienes': {'muebles': [{"bien": "Vehiculo",
