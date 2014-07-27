@@ -6,18 +6,18 @@ Programa para descargar las hojas de vida de los candidatos a las elecciones mun
 
 ### Archivos
 
-* extrae.py: Funciones para hacer peticiones a las apis dej JNE
-* filtro.py: Funciones para limpiar la informacion devuelta por las apis del JNE
-* salida.py: Ejemplo de hoja de vida de un candidato despues de la limpieza
-* main.py: automatizacion del proceso de descarga, limpieza y volcado a una base de datos Mongodb
+* extrae.py: Funciones para hacer peticiones a las apis del JNE.
+* filtro.py: Funciones para limpiar la informacion devuelta por las apis del JNE.
+* salida.py: Ejemplo de hoja de vida de un candidato despues de la limpieza.
+* main.py: automatizacion del proceso de descarga, limpieza y volcado a una base de datos Mongodb.
 
 ### Descargar el programa
 
-Usando `git` solo es necesario ejecutar este comando en terminal
+Usando `git` solo es necesario ejecutar este comando en terminal para clonar el repositorio.
 ```bash
 git clone https://github.com/HackSpaceUni/candidatos-python.git
 ```
-Este comando descargara todo el repositorio en la carpeta "candidatos-python"
+Este comando descargara todo el repositorio en la carpeta "candidatos-python".
 
 ### Dependencias
 
@@ -38,7 +38,7 @@ id_cand = 102472
 data_cand = descarga_candidato(id_cand)
 ```
 
-Si se desea descargar varios candidatos y ya se cuenta con una base de datos Mongodb en `localhost` escuchando en el puerto 27017 se pueden aprovechar las funciones definidas en `main.py`
+Si se desea descargar varios candidatos y ya se cuenta con una base de datos Mongodb en `localhost` escuchando en el puerto 27017 se pueden aprovechar las funciones definidas en `main.py`.
 ```python
 import main
 main.descarga_varios(1, 100, 2)
