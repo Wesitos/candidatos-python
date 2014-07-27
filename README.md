@@ -45,5 +45,5 @@ main.descarga_varios(1, 100, 2)
 ```
 Esto descarga los candidatos con ids desde el 1 al 100 (incluyendo estos) utilizando 2 threads (descarga 2 candidatos en paralelo). Si se quiere utilizar otros parametros para conectarse a la base de datos, se puede llamar antes a la funcion `conectar_db`.
 ```python
-main.conectar_db(wesitos.com, 6000)
+main.conectar_db("wesitos.com", 6000)
 ```
