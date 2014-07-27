@@ -72,7 +72,7 @@ def realiza_peticion(key, id_candidato, timeout=1):
     url = _dic_urls[key]
     kargs = {
         "data": json.dumps(payload),
-        "headers": headers,
+        "headers": _headers,
         "timeout": timeout}
     while True:
         try:
