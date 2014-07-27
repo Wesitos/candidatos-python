@@ -9,15 +9,27 @@ import time
 
 # Creamos el cliente de Mongodb solo una vez
 # Por defecto se conecta a 'localhost' por el puerto 27017
-_client = MongoClient()
+_client = None
 
 # Donde guardaremos la informacion en la base de datos
 _database = "candidatos"
 _collection = "candFiltrado"
 
+def conectar_db(host="localhost", port=27017,
+                db=None, collection=None):
+    """Crea un cliente de la base de datos Mongodb"""
+    global _client 
+    _client = MongoClient(host, port)
+    if db:
+        global _database
+        _database = db
+    if collection:
+        global _collection
+        _collection = collection
+    
 
 def db_inserta(dato, contador=[0]):
-    """Inserta un dato en la collecion indicada
+    """Inserta un dato en la base de datos
 
     La variable 'contador' se comporta como una variable estatica.
     Nos permite limitar la cantidad de mensajes que imprimimos en
@@ -85,6 +97,9 @@ def genera_threads(n_threads, iter_get_params, foo_do, foo_done):
 def descarga_varios(id_inicio, id_fin, n_threads=1):
     """Descargar un intervalo de candidatos utilizando varios
     threads"""
+    if not _client:
+        conectar_db()
+
     if id_inicio > id_fin:
         iter_params = range(id_inicio, id_fin - 1, -1)
     else:
@@ -111,4 +126,4 @@ def descarga_varios(id_inicio, id_fin, n_threads=1):
 
 if __name__ == "__main__":
     # Descarga y filtra candidatos a la base de datos Mongodb
-    descarga_varios(0, 116826, 2)
+    descarga_varios(1, 116826, 2)
