@@ -1,8 +1,10 @@
-candidatos-python
+Candidatos-python
 =================
 Programa para descargar las hojas de vida de los candidatos a las elecciones municipales y regionales 2014
 
 ***
+
+### Archivos
 
 * extrae.py: Funciones para hacer peticiones a las apis dej JNE
 * filtro.py: Funciones para limpiar la informacion devuelta por las apis del JNE
