@@ -1,7 +1,6 @@
 # -*- coding: iso-8859-15 -*-
 # Aca se definen las funciones necesarias para descargar y filtrar
 # la data
-import requests as req
 import threading
 from filtro import Filtro
 import json
@@ -65,7 +64,7 @@ def genera_mensaje(id_Candidato):
     }
 
 
-def realiza_peticion(key, id_candidato, timeout=1):
+def realiza_peticion(key, id_candidato, tor, timeout=1):
     """Realiza una peticion a una de las apis. Devuelve la
     respuesta (json) como un diccionario"""
     payload = genera_mensaje(id_candidato)
@@ -76,7 +75,18 @@ def realiza_peticion(key, id_candidato, timeout=1):
         "timeout": timeout}
     while True:
         try:
-            r = req.post(url, **kargs)
+            if tor is True:
+                import requesocks as req
+
+                tor_req = req.session()
+                tor_req.proxies = {
+                    'http': 'socks5://127.0.0.1:9050',
+                    'https': 'socks5://127.0.0.1:9050',
+                }
+                r = tor_req.post(url, **kargs)
+            else:
+                import requests as req
+                r = req.post(url, **kargs)
         except req.exceptions.Timeout:
             # imprime("Timeout error")
             continue
@@ -98,7 +108,10 @@ def realiza_peticion(key, id_candidato, timeout=1):
                 imprime("Ataque detectado!! A dormir")
                 time.sleep(60)
                 continue
-            return r.json()
+            if hasattr(r, 'json'):
+                return r.json()
+            else:
+                return json.loads(r.content)
 
 
 def filtra_data(key, raw_data):
@@ -107,7 +120,7 @@ def filtra_data(key, raw_data):
     return data
 
 
-def descarga_candidato(id_cand, filtrar=True):
+def descarga_candidato(id_cand, filtrar=True, tor=False):
     """Descarga los datos de un candidato.
 
     "filtrar" indica si se devuelve un diccionario con la data
@@ -115,7 +128,7 @@ def descarga_candidato(id_cand, filtrar=True):
     si es un id invalido, devuelve un diccionario con solo los
     campos de "_id" y "ok" """
     dic_candidato = {"_id": id_cand}
-    raw_principal = realiza_peticion("principal", id_cand)
+    raw_principal = realiza_peticion("principal", id_cand, tor)
     data_principal = filtra_data("principal", raw_principal)
     # Verifica si el id es valido
     if not data_principal:
@@ -129,7 +142,7 @@ def descarga_candidato(id_cand, filtrar=True):
         for key in _dic_urls.keys():
             if key == "principal":
                 continue
-            raw_data = realiza_peticion(key, id_cand)
+            raw_data = realiza_peticion(key, id_cand, tor)
             dic_candidato[key] = filtra_data(key, raw_data)
 
     else:
@@ -137,6 +150,6 @@ def descarga_candidato(id_cand, filtrar=True):
         for key in _dic_urls.keys():
             if key == "principal":
                 continue
-            dic_candidato["key"] = realiza_peticion(key, id_cand)
+            dic_candidato["key"] = realiza_peticion(key, id_cand, tor)
 
     return dic_candidato
