@@ -106,7 +106,10 @@ def realiza_peticion(key, id_candidato, tor, timeout=1):
                 imprime("Ataque detectado!! A dormir")
                 time.sleep(60)
                 continue
-            return r.json()
+            if hasattr(r, 'json'):
+                return r.json()
+            else:
+                return json.loads(r.content)
 
 
 def filtra_data(key, raw_data):
