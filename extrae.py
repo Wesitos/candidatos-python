@@ -1,7 +1,6 @@
 # -*- coding: iso-8859-15 -*-
 # Aca se definen las funciones necesarias para descargar y filtrar
 # la data
-import requests as req
 import threading
 from filtro import Filtro
 import json
@@ -77,14 +76,17 @@ def realiza_peticion(key, id_candidato, tor, timeout=1):
     while True:
         try:
             if tor is True:
-                import requesocks
+                import requesocks as req
 
-                req = requesocks.session()
-                req.proxies = {
+                tor_req = req.session()
+                tor_req.proxies = {
                     'http': 'socks5://127.0.0.1:9050',
                     'https': 'socks5://127.0.0.1:9050',
                 }
-            r = req.post(url, **kargs)
+                r = tor_req.post(url, **kargs)
+            else:
+                import requests as req
+                r = req.post(url, **kargs)
         except req.exceptions.Timeout:
             # imprime("Timeout error")
             continue
@@ -118,7 +120,7 @@ def filtra_data(key, raw_data):
     return data
 
 
-def descarga_candidato(id_cand, filtrar=True, tor=True):
+def descarga_candidato(id_cand, filtrar=True, tor=False):
     """Descarga los datos de un candidato.
 
     "filtrar" indica si se devuelve un diccionario con la data
