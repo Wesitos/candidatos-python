@@ -118,7 +118,7 @@ def descarga_candidato(id_cand, filtrar=True):
     raw_principal = realiza_peticion("principal", id_cand)
     data_principal = filtra_data("principal", raw_principal)
     # Verifica si el id es valido
-    if not raw_principal:
+    if not data_principal:
         dic_candidato["ok"] = False
         return dic_candidato
     else:

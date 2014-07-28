@@ -1,5 +1,19 @@
 # -*- coding: iso-8859-15 -*-
 
+_lista_keys = ["familia",
+               "otraExperiencia",
+               "observaciones",
+               "ingresos",
+               "experiencia",
+               "educacionSuperior",
+               "educacionBasica",
+               "militancia",
+               "eleccion",
+               "partidario",
+               "bienes",
+               "penal",
+               "civil",
+               "acreencias"]
 
 class Filtro (object):
     """Clase de funciones estaticas para filtrar la data
@@ -66,7 +80,7 @@ class Filtro (object):
             tipo_key = item["objTipoBE"]["intTipo"]
             dic_familia[dic_keys[tipo_key]] = item["strNombres"].upper()
 
-        return dic_familia
+        return dic_familia if dic_familia else None
 
     @staticmethod
     def f_experiencia(data):
@@ -88,7 +102,7 @@ class Filtro (object):
             }
             lista_experiencia.append(dic_experiencia)
 
-        return lista_experiencia
+        return lista_experiencia if lista_experiencia else None
 
     @staticmethod
     def f_educacionBasica(data):
@@ -315,7 +329,7 @@ class Filtro (object):
             }
             lista_renuncias.append(dic_renuncias)
 
-        return lista_renuncias
+        return lista_renuncias if lista_renuncias else None
 
     @staticmethod
     def f_penal(data):
@@ -336,7 +350,7 @@ class Filtro (object):
             }
             lista_penal.append(dic_penal)
 
-        return lista_penal
+        return lista_penal if lista_penal else None
 
     @staticmethod
     def f_civil(data):
@@ -354,7 +368,7 @@ class Filtro (object):
             }
             lista_civil.append(dic_civil)
 
-        return lista_civil
+        return lista_civil if lista_civil else None
 
     @staticmethod
     def f_otraExperiencia(data):
@@ -371,7 +385,7 @@ class Filtro (object):
             }
             lista_otra_exp.append(dic_otra_exp)
 
-        return lista_otra_exp
+        return lista_otra_exp if lista_otra_exp else None
 
     @staticmethod
     def f_ingresos(data):
@@ -448,7 +462,7 @@ class Filtro (object):
                 "monto": item["floTotalDeuda"],
             }
             lista_acreencias.append(dic_acreencias)
-        return lista_acreencias
+        return lista_acreencias if lista_acreencias else None
 
     @staticmethod
     def f_observaciones(data):
@@ -462,4 +476,22 @@ class Filtro (object):
                 "anotacion": item["strObservacionCompleto"],
             }
             lista_observaciones.append(dic_observaciones)
-        return lista_observaciones
+        return lista_observaciones if lista_observaciones else None
+
+    @staticmethod
+    def f_data_sucia(data):
+        """funcion para limpiar la data generada por el bug en
+        descarga_candidato"""
+        dic_limpio = {"_id": data["_id"], "ok": False}
+        dic_principal = Filtro.f_principal(data)
+        if not dic_principal:
+            return dic_limpio
+        else:
+            dic_limpio["ok"] = True
+
+        dic_limpio.update(dic_principal)
+        
+        for key in _lista_keys:
+            dic_limpio[key] = data[key]
+
+        return dic_limpio
