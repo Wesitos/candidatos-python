@@ -125,7 +125,7 @@ def descarga_candidato(id_cand, filtrar=True):
         dic_candidato["ok"] = True
 
     if filtrar:
-        dic_candidato.update(raw_principal)
+        dic_candidato.update(data_principal)
         for key in _dic_urls.keys():
             if key == "principal":
                 continue
