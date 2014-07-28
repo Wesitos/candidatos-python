@@ -5,7 +5,18 @@ import threading
 from filtro import Filtro
 import json
 import time
+import requests as req
+# Intenta importar requesocks
+try:
+    import requesocks as req_socks
+except ImportError as err:
+    _tor_available = False
+    _tor_error = err
+else:
+    _tor_available = True
 
+_tor_proxies = {'http': 'socks5://127.0.0.1:9050',
+                'https': 'socks5://127.0.0.1:9050'}
 
 lock_print = threading.Lock()
 _base_url = "http://200.48.102.67/pecaoe/servicios/"
@@ -64,7 +75,7 @@ def genera_mensaje(id_Candidato):
     }
 
 
-def realiza_peticion(key, id_candidato, tor, timeout=1):
+def realiza_peticion(key, id_candidato, tor=False, timeout=2):
     """Realiza una peticion a una de las apis. Devuelve la
     respuesta (json) como un diccionario"""
     payload = genera_mensaje(id_candidato)
@@ -76,19 +87,13 @@ def realiza_peticion(key, id_candidato, tor, timeout=1):
     while True:
         try:
             if tor is True:
-                import requesocks as req
-
-                tor_req = req.session()
-                tor_req.proxies = {
-                    'http': 'socks5://127.0.0.1:9050',
-                    'https': 'socks5://127.0.0.1:9050',
-                }
+                tor_req = req_socks.session()
+                tor_req.proxies = _tor_proxies
                 r = tor_req.post(url, **kargs)
             else:
-                import requests as req
                 r = req.post(url, **kargs)
         except req.exceptions.Timeout:
-            # imprime("Timeout error")
+            imprime("Timeout error")
             continue
         except req.exceptions.ConnectionError as error:
             errno = error.errno
@@ -99,7 +104,7 @@ def realiza_peticion(key, id_candidato, tor, timeout=1):
             time.sleep(0.5)
             continue
         except Exception as e:
-            imprime("Excepcion " + str(e))
+            imprime("Excepcion: " + str(e))
             time.sleep(0.5)
             continue
         else:
@@ -136,6 +141,10 @@ def descarga_candidato(id_cand, filtrar=True, tor=False):
         return dic_candidato
     else:
         dic_candidato["ok"] = True
+    # Verifica si se pudo importar requesocks. En caso contrario,
+    # manda una excepcion
+    if tor and (not _tor_available):
+        raise _tor_error
 
     if filtrar:
         dic_candidato.update(data_principal)
