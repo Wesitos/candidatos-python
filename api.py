@@ -5,7 +5,7 @@ from pymongo import MongoClient
 
 _client = None
 _database = "candidatos"
-_collection = "candFiltrado"
+_collection = "candLimpio"
 
 def conectar_db(host="localhost", port=27017,
                 db=None, collection=None):
