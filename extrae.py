@@ -159,6 +159,6 @@ def descarga_candidato(id_cand, filtrar=True, tor=False):
         for key in _dic_urls.keys():
             if key == "principal":
                 continue
-            dic_candidato["key"] = realiza_peticion(key, id_cand, tor)
+            dic_candidato[key] = realiza_peticion(key, id_cand, tor)
 
     return dic_candidato

@@ -444,7 +444,7 @@ class Filtro (object):
                     # Valor S/.
                     "valor": item["floValor_Bien"],
                 }
-
+                lista_muebles.append(dic_muebles)
         return {
             "muebles": lista_muebles if lista_muebles else None,
             "inmuebles": lista_inmuebles if lista_inmuebles else None
@@ -495,3 +495,19 @@ class Filtro (object):
             dic_limpio[key] = data[key]
 
         return dic_limpio
+
+    @staticmethod
+    def f_data_raw(data):
+        dic_filtrado = {"_id": data["_id"], "ok":False}
+        dic_principal = Filtro.f_principal(data)
+        if not dic_principal:
+            return dic_filtrado
+        else:
+            dic_filtrado["ok"] = True
+
+        dic_filtrado.update(dic_principal)
+
+        for key in _lista_keys:
+            dic_filtrado[key] = getattr(Filtro, "f_"+key)(data[key])
+
+        return dic_filtrado
