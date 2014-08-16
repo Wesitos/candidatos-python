@@ -162,3 +162,18 @@ def descarga_candidato(id_cand, filtrar=True, tor=False):
             dic_candidato[key] = realiza_peticion(key, id_cand, tor)
 
     return dic_candidato
+
+def descarga_campo(id_cand, key, filtrar=True, tor=False):
+    """Descarga un campo de un candidato"""
+    dic_candidato = {"_id": id_cand}
+    raw_data = realiza_peticion(key, id_cand, tor)
+    
+
+    if filtrar:
+        dic_data = filtra_data(key, raw_data)
+        dic_candidato[key] = dic_data        
+    else:
+        dic_candidato[key] = raw_data
+
+    return dic_candidato
+    
