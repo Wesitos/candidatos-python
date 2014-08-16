@@ -30,7 +30,7 @@ class Filtro (object):
         ubi_pos_Be = data["objUbigeoPostulaBE"]
         ubi_nac_BE = data["objUbigeoNacimientoBE"]
         ubi_res_BE = data["objUbigeoResidenciaBE"]
-        fec_nac = data["strFecha_Nac"][::-1]
+        fec_nac = data["strFecha_Nac"]
         dic_postulacion = {
             "cargo": car_aut_BE["strCargoAutoridad"],
             "departamento": ubi_pos_Be["strDepartamento"],
@@ -47,7 +47,7 @@ class Filtro (object):
             "email": data["strCorreo"],
         }
         dic_nacimiento = {
-            "fecha": "/".join([fec_nac[0:2], fec_nac[2:4], fec_nac[4:]]),
+            "fecha": "/".join([fec_nac[0:2], fec_nac[2:4], fec_nac[0:4]]),
             "pais": data["strPais"],
             "departamento": ubi_nac_BE["strDepartamento"],
             "provincia": ubi_nac_BE["strProvincia"],
