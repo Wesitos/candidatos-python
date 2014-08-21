@@ -10,7 +10,7 @@ _database = "candidatos"
 def conectar_db(host="localhost", port=27017,
                 db=None):
     """Crea un cliente de la base de datos Mongodb"""
-    global _client 
+    global _client
     _client = MongoClient(host, port)
     if db:
         global _database

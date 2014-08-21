@@ -18,7 +18,7 @@ _collection = "candFiltrado"
 def conectar_db(host="localhost", port=27017,
                 db=None, collection=None):
     """Crea un cliente de la base de datos Mongodb"""
-    global _client 
+    global _client
     _client = MongoClient(host, port)
     if db:
         global _database
@@ -26,7 +26,7 @@ def conectar_db(host="localhost", port=27017,
     if collection:
         global _collection
         _collection = collection
-    
+
 
 def db_inserta(dato, contador=[0]):
     """Inserta un dato en la base de datos

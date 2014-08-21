@@ -16,8 +16,7 @@ _lista_keys = ["familia",
                "acreencias"]
 
 class Filtro (object):
-    """Clase de funciones estaticas para filtrar la data
-
+    """Funciones estaticas para filtrar la data
     Una funcion para cada api"""
     @staticmethod
     def f_principal(data):
@@ -490,7 +489,7 @@ class Filtro (object):
             dic_limpio["ok"] = True
 
         dic_limpio.update(dic_principal)
-        
+
         for key in _lista_keys:
             dic_limpio[key] = data[key]
 
