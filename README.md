@@ -38,8 +38,7 @@ id_cand = 102472
 data_cand = descarga_candidato(id_cand)
 ```
 
-Si tienes Tor instalado y quieres hacer las descargas detrás de esta red
-anonimizadora debes agregar un parámetro adicional:
+Si tienes Tor instalado y corriendo, y quieres hacer las descargas detrás de esta red anonimizadora, debes agregar un parámetro adicional:
 
 ```python
 data_cand = descarga_candidato(id_cand, tor=True)
@@ -47,8 +46,9 @@ data_cand = descarga_candidato(id_cand, tor=True)
 
 Si se desea descargar varios candidatos y ya se cuenta con una base de datos Mongodb en `localhost` escuchando en el puerto 27017 se pueden aprovechar las funciones definidas en `main.py`.
 ```python
-import main
-main.descarga_varios(1, 100, 2)
+from main import descarga_varios
+# Descarga los ids del 1 al 100 utilizando 2 threads
+descarga_varios(1, 100, 2)
 ```
 Esto descarga los candidatos con ids desde el 1 al 100 (incluyendo estos) utilizando 2 threads (descarga 2 candidatos en paralelo). Si se quiere utilizar otros parametros para conectarse a la base de datos, se puede llamar antes a la funcion `conectar_db`.
 ```python
