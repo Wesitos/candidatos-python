@@ -94,7 +94,7 @@ def genera_threads(n_threads, iter_get_params, foo_do, foo_done):
             for _ in range(n_threads)]
 
 
-def descarga_varios(id_inicio, id_fin, n_threads=1):
+def descarga_varios(id_inicio, id_fin, n_threads=1, filtrar=True, tor=False):
     """Descargar un intervalo de candidatos utilizando varios
     threads"""
     if not _client:
@@ -106,7 +106,7 @@ def descarga_varios(id_inicio, id_fin, n_threads=1):
         iter_params = range(id_inicio, id_fin + 1)
     kargs = {"n_threads": n_threads,
              "iter_get_params": iter_params,
-             "foo_do": descarga_candidato,
+             "foo_do": lambda x: descarga_candidato(x, filtrar, tor),
              "foo_done": db_inserta}
     lista_threads = genera_threads(**kargs)
 
