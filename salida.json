@@ -205,7 +205,11 @@
     },
     "nacimiento": {
         "pais": "PER\\u00da",
-        "fecha": "61/80/9491",
+        "fecha": {
+            "d": 16,
+            "m": 8,
+            "y": 1949
+        },
         "distrito": "LIMA",
         "departamento": "LIMA",
         "provincia": "LIMA"

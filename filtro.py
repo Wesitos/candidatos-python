@@ -46,7 +46,7 @@ class Filtro (object):
             "email": data["strCorreo"],
         }
         dic_nacimiento = {
-            "fecha": "/".join([fec_nac[0:2], fec_nac[2:4], fec_nac[0:4]]),
+            "fecha": {"d": int( fec_nac[6:]), "m": int(fec_nac[4:6]), "y": int(fec_nac[0:4])},
             "pais": data["strPais"],
             "departamento": ubi_nac_BE["strDepartamento"],
             "provincia": ubi_nac_BE["strProvincia"],
