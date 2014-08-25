@@ -1,0 +1,222 @@
+{
+    "bienes": {
+        "muebles": [
+            {
+                "descripcion": "",
+                "bien": "Vehiculo",
+                "caracteristicas": "",
+                "tipo": "",
+                "valor": 0
+            }
+        ],
+        "inmuebles": [
+            {
+                "direccion": "AV. LA PAZ 646 MIRAFLORES",
+                "registro": "0000129094",
+                "tipo": "LOCAL STAND 13 (12.5%)",
+                "valor": 4808
+            }
+        ]
+    },
+    "educacionSuperior": {
+        "postgrado": [
+            {
+                "concluido": 1,
+                "gradoTitulo": "",
+                "tipo": null,
+                "inicio": 1966,
+                "pais": "PER\\u00da",
+                "instEducativa": "Instituto Superior de Educaci\\u00f3n Familiar",
+                "fin": 1970,
+                "especialidad": "Educadora Familiar"
+            }
+        ],
+        "tecnico": [
+            {
+                "concluido": 1,
+                "pais": "PER\\u00da",
+                "provincia": "LIMA",
+                "departamento": "LIMA",
+                "inicio": 1966,
+                "curso": "Educaci\\u00f3n Familiar",
+                "instEducativa": "Instituto Superior de Educaci\\u00f3n Familiar",
+                "distrito": "MIRAFLORES",
+                "especialidad": "Educadora Familiar",
+                "fin": 1970
+            }
+        ],
+        "universitario": [
+            {
+                "departamento": null,
+                "pais": "CHILE",
+                "concluido": 0,
+                "gradoTitulo": "Ninguno",
+                "provincia": null,
+                "fin": null,
+                "facultad": "SOCIOLOGIA",
+                "carrera": "SOCIOLOGIA",
+                "inicio": 1973,
+                "instEducativa": " UNIVERSIDAD CAT\\u00d3LICA DE CHILE",
+                "distrito": null
+            }
+        ]
+    },
+    "ok": true,
+    "militancia": [
+        {
+            "fin": 2009,
+            "orgPolitica": "Partido por la Democracia Social - Compromiso Per\\u00fa",
+            "inicio": 2001
+        }
+    ],
+    "civil": [
+        {
+            "materia": "",
+            "fallo": "",
+            "expediente": "",
+            "juzgado": ""
+        }
+    ],
+    "observaciones": [
+        {
+            "referencia": "",
+            "anotacion": ""
+        }
+    ],
+    "partidario": [
+        {
+            "cargo": "Primera y Segunda Vicepresidente",
+            "inicio": 2008,
+            "ambito": "NACIONAL",
+            "orgPolitica": "Partido Descentralista Fuerza Social",
+            "fin": 2010
+        }
+    ],
+    "eleccion": [
+        {
+            "procesoElectoral": "2010",
+            "cargo": "ALCALDE PROVINCIAL",
+            "provincia": "LIMA",
+            "orgPolitica": "Partido Descentralista Fuerza Social",
+            "ambito": "PROVINCIAL",
+            "inicio": 2011,
+            "distrito": null,
+            "fin": null,
+            "departamento": "LIMA"
+        }
+    ],
+    "postulacion": {
+        "cargo": "ALCALDE PROVINCIAL",
+        "designacion": "NO OBLIGATORIO PARA ORGANIZACION POLITICA LOCAL PROVINCIAL O DISTRITAL",
+        "distrito": "",
+        "departamento": "LIMA",
+        "provincia": "LIMA"
+    },
+    "datosPersonales": {
+        "apellidoMaterno": "VILLARAN",
+        "nombres": "SUSANA MARIA DEL CARMEN",
+        "dni": 8051943,
+        "sexo": "F",
+        "apellidoPaterno": "VILLARAN",
+        "email": "susanavillaran2014@gmail.com"
+    },
+    "_id": 104272,
+    "ingresos": {
+        "remuneracion": {
+            "publico": 14300,
+            "total": 14300,
+            "privado": 0
+        },
+        "total": 15754.6,
+        "otros": {
+            "publico": 0,
+            "total": 1454.6,
+            "privado": 1454.6
+        },
+        "renta": {
+            "publico": 0,
+            "total": 0,
+            "privado": 0
+        }
+    },
+    "experiencia": [
+        {
+            "sector": "P\\u00fablico",
+            "cargo": 2011,
+            "provincia": "LIMA",
+            "empleador": "Municipalidad Metropolitana de Lima",
+            "inicio": 2011,
+            "fin": "AHORA",
+            "distrito": "LIMA",
+            "departamento": "LIMA"
+        }
+    ],
+    "residencia": {
+        "lugar": "Calle Bertolotto 111 dpto. 711",
+        "provincia": "LIMA",
+        "tiempo": "63",
+        "distrito": "SAN MIGUEL",
+        "departamento": "LIMA"
+    },
+    "familia": {
+        "madre": "JOSEFINA DE LA PUENTE Y LAVALLE",
+        "conyuge": "MANUEL EDUARDO JORGE PIQUERAS LUNA",
+        "padre": "FERNANDO VILLARAN DUANY"
+    },
+    "acreencias": [
+        {
+            "monto": 3465,
+            "detalle": "Caja Metropolitana de Lima"
+        }
+    ],
+    "otraExperiencia": [
+        {
+            "entidad": "",
+            "cargo": "",
+            "fin": 0,
+            "inicio": 0
+        }
+    ],
+    "educacionBasica": {
+        "secundaria": [
+            {
+                "concluido": 1,
+                "provincia": "LIMA",
+                "inicio": 1961,
+                "pais": "PER\\u00da",
+                "instEducativa": "Sagrado Coraz\\u00f3n Monterrico",
+                "distrito": "SANTIAGO DE SURCO",
+                "departamento": "LIMA",
+                "fin": 1962
+            }
+        ],
+        "primaria": [
+            {
+                "concluido": 1,
+                "provincia": "LIMA",
+                "inicio": 1955,
+                "pais": "PER\\u00da",
+                "instEducativa": "SAGRADO CORAZON CHALET",
+                "distrito": "CHORRILLOS",
+                "departamento": "LIMA",
+                "fin": 1960
+            }
+        ]
+    },
+    "nacimiento": {
+        "pais": "PER\\u00da",
+        "fecha": "61/80/9491",
+        "distrito": "LIMA",
+        "departamento": "LIMA",
+        "provincia": "LIMA"
+    },
+    "penal": [
+        {
+            "delito": "",
+            "juzgado": "",
+            "expediente": "",
+            "fallo": "",
+            "fechaSentencia": ""
+        }
+    ]
+}
