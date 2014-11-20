@@ -71,6 +71,7 @@ def genera_mensaje(id_Candidato):
         "objCandidatoBE":
         {"objProcesoElectoralBE": {"intIdProceso": "72"},
          "objOpInscritasBE": {"intCod_OP": "140"},
+         "intEstado": 1,
          "intId_Candidato": str(id_Candidato)}
     }
 
