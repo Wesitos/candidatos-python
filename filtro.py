@@ -31,6 +31,7 @@ class Filtro (object):
         ubi_res_BE = data["objUbigeoResidenciaBE"]
         fec_nac = data["strFecha_Nac"]
         dic_postulacion = {
+            "ubigeo": ubi_pos_Be["strUbigeo"],
             "cargo": car_aut_BE["strCargoAutoridad"],
             "departamento": ubi_pos_Be["strDepartamento"],
             "provincia": ubi_pos_Be["strProvincia"],
@@ -46,6 +47,7 @@ class Filtro (object):
             "email": data["strCorreo"],
         }
         dic_nacimiento = {
+            "ubigeo": ubi_nac_BE["strUbigeo"],
             "fecha": {"d": int( fec_nac[6:]), "m": int(fec_nac[4:6]), "y": int(fec_nac[0:4])},
             "pais": data["strPais"],
             "departamento": ubi_nac_BE["strDepartamento"],
@@ -53,6 +55,7 @@ class Filtro (object):
             "distrito": ubi_nac_BE["strDistrito"],
         }
         dic_residencia = {
+            "ubigeo": ubi_res_BE["strUbigeo"],
             "lugar": data["strResidencia"],
             "departamento": ubi_res_BE["strDepartamento"],
             "provincia": ubi_res_BE["strProvincia"],
