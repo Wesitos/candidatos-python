@@ -106,6 +106,7 @@
         }
     ],
     "postulacion": {
+        "ubigeo": "140100",
         "cargo": "ALCALDE PROVINCIAL",
         "designacion": "NO OBLIGATORIO PARA ORGANIZACION POLITICA LOCAL PROVINCIAL O DISTRITAL",
         "distrito": "",
@@ -152,6 +153,7 @@
         }
     ],
     "residencia": {
+        "ubigeo": "140127",
         "lugar": "Calle Bertolotto 111 dpto. 711",
         "provincia": "LIMA",
         "tiempo": "63",
@@ -205,6 +207,7 @@
     },
     "nacimiento": {
         "pais": "PER\\u00da",
+        "ubigeo": "140101",
         "fecha": {
             "d": 16,
             "m": 8,
