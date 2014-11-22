@@ -2,6 +2,8 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship, backref, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, Boolean, Date, create_engine
+from pymongo import MongoClient()
+
 
 Base = declarative_base()
 
@@ -257,3 +259,9 @@ def crea_candidato_object(dict_candidato):
 
     candidato_object = Candidato(**dict_campos)
     return candidato_object
+
+def mongo_to_sqlalchemy(client=MongoClient(), db="candidatos", colleccion="candLimpio"):
+    collect = client.db.collect
+    cursor = collect.find({"ok":True})
+    for cand in cursor:
+        Base.add(crear_candidato_object(cand))
