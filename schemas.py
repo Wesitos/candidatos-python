@@ -2,52 +2,55 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship, backref, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, Boolean, Date, create_engine
-from pymongo import MongoClient()
-
+from pymongo import MongoClient, ASCENDING
+from datetime import date
 
 Base = declarative_base()
+engine = create_engine("mysql+pymysql://candidatos:candidatos@localhost/candidatos?charset=utf8")
+Session = sessionmaker(bind=engine)
+session = Session()
 
 class Candidato(Base):
     __tablename__ = "candidatos"
 
-    id = Column(Integer)
+    id = Column(Integer, primary_key=True)
 
     # Datos Personales
-    dni = Column(Integer, primary_key=True)
-    nombres = Column(String)
-    apellidoMaterno = Column(String)
-    apellidoPaterno = Column(String)
-    sexo = Column(String)
-    email = Column(String)
+    dni = Column(Integer)
+    nombres = Column(String(300))
+    apellidoMaterno = Column(String(300))
+    apellidoPaterno = Column(String(300))
+    sexo = Column(String(300))
+    email = Column(String(300))
 
     # Familia
-    madre = Column(String)
-    conyuge = Column(String)
-    padre = Column(String)
+    madre = Column(String(300))
+    conyuge = Column(String(300))
+    padre = Column(String(300))
 
     #Postulacion
-    postulacion_cargo = Column(String)
-    postulacion_ubigeo = Column(String)
-    postulacion_distrito = Column(String)
-    postulacion_provincia = Column(String)
-    postulacion_departamento = Column(String)
-    postulacion_designacion = Column(String)
+    postulacion_cargo = Column(String(300))
+    postulacion_ubigeo = Column(String(300))
+    postulacion_distrito = Column(String(300))
+    postulacion_provincia = Column(String(300))
+    postulacion_departamento = Column(String(300))
+    postulacion_designacion = Column(String(300))
 
     # Nacimiento
-    nacimiento_pais = Column(String)
-    nacimiento_ubigeo = Column(String)
+    nacimiento_pais = Column(String(300))
+    nacimiento_ubigeo = Column(String(300))
     nacimiento_fecha = Column(Date)
-    nacimiento_distrito = Column(String)
-    nacimiento_provincia = Column(String)
-    nacimiento_departamento = Column(String)
+    nacimiento_distrito = Column(String(300))
+    nacimiento_provincia = Column(String(300))
+    nacimiento_departamento = Column(String(300))
 
     # Residencia
-    residencia_lugar = Column(String)
-    residencia_ubigeo = Column(String)
-    residencia_distrito = Column(String)
-    residencia_tiempo = Column(String)
-    residencia_provincia = Column(String)
-    residencia_departamento = Column(String)
+    residencia_lugar = Column(String(300))
+    residencia_ubigeo = Column(String(300))
+    residencia_distrito = Column(String(300))
+    residencia_tiempo = Column(String(300))
+    residencia_provincia = Column(String(300))
+    residencia_departamento = Column(String(300))
 
     bienes_muebles = relationship("BienMueble", backref="candidato")
     bienes_inmuebles = relationship("BienInmueble", backref="candidato")
@@ -66,168 +69,168 @@ class Candidato(Base):
 class BienMueble(Base):
     __tablename__ = 'bienes_muebles'
     id = Column(Integer, primary_key=True)
-    bien = Column(String)
-    tipo = Column(String)
-    descripcion = Column(String)
-    caracteristicas = Column(String)
+    bien = Column(String(300))
+    tipo = Column(String(300))
+    descripcion = Column(String(300))
+    caracteristicas = Column(String(300))
     valor = Column(Integer)
 
-    dni_candidato = Column(Integer, ForeignKey('candidatos.dni'))
+    id_candidato = Column(Integer, ForeignKey('candidatos.id'))
 
 class BienInmueble(Base):
     __tablename__ = 'bienes_inmuebles'
     id = Column(Integer, primary_key=True)
-    registro = Column(String)
+    registro = Column(String(300))
     valor = Column(Integer)
-    tipo = Column(String)
-    direccion = Column(String)
+    tipo = Column(String(300))
+    direccion = Column(String(300))
 
-    dni_candidato = Column(Integer, ForeignKey('candidatos.dni'))
+    id_candidato = Column(Integer, ForeignKey('candidatos.id'))
 
 class OtraExperiencia(Base):
     __tablename__ = 'otra_experiencia'
     id = Column(Integer, primary_key=True)
-    cargo = Column(String)
-    entidad = Column(String)
+    cargo = Column(String(300))
+    entidad = Column(String(300))
     inicio = Column(Integer)
     fin = Column(Integer)
 
-    dni_candidato = Column(Integer, ForeignKey('candidatos.dni'))
+    id_candidato = Column(Integer, ForeignKey('candidatos.id'))
 
 class Militancia(Base):
     __tablename__ = 'militancias'
     id = Column(Integer, primary_key=True)
     fin = Column(Integer)
     inicio = Column(Integer)
-    orgPolitica = Column(String)
+    orgPolitica = Column(String(300))
 
-    dni_candidato = Column(Integer, ForeignKey('candidatos.dni'))
+    id_candidato = Column(Integer, ForeignKey('candidatos.id'))
 
 class Civil(Base):
     __tablename__ = 'civiles'
     id = Column(Integer, primary_key=True)
-    materia = Column(String)
-    expediente = Column(String)
-    juzgado = Column(String)
-    materia = Column(String)
-    fallo = Column(String)
+    materia = Column(String(300))
+    expediente = Column(String(300))
+    juzgado = Column(String(300))
+    materia = Column(String(300))
+    fallo = Column(String(300))
 
-    dni_candidato = Column(Integer, ForeignKey('candidatos.dni'))
+    id_candidato = Column(Integer, ForeignKey('candidatos.id'))
 
 class Postgrado(Base):
     __tablename__ = 'educacion_superior_postgrado'
     id = Column(Integer, primary_key=True)
     concluido = Column(Boolean)
-    gradoTitulo = Column(String)
-    tipo = Column(String)
+    gradoTitulo = Column(String(300))
+    tipo = Column(String(300))
     inicio = Column(Integer)
-    pais = Column(String)
-    instEducativa = Column(String)
+    pais = Column(String(300))
+    instEducativa = Column(String(300))
     fin = Column(Integer)
-    especialidad = Column(String)
+    especialidad = Column(String(300))
 
-    dni_candidato = Column(Integer, ForeignKey('candidatos.dni'))
+    id_candidato = Column(Integer, ForeignKey('candidatos.id'))
 
 class Tecnico(Base):
     __tablename__ = 'educacion_superior_tecnico'
     id = Column(Integer, primary_key=True)
     concluido = Column(Boolean)
-    provincia = Column(String)
-    curso = Column(String)
-    distrito = Column(String)
-    especialidad = Column(String)
-    departamento = Column(String)
+    provincia = Column(String(300))
+    curso = Column(String(300))
+    distrito = Column(String(300))
+    especialidad = Column(String(300))
+    departamento = Column(String(300))
     inicio = Column(Integer)
     pais = Column(Integer)
-    instEducativa = Column(String)
+    instEducativa = Column(String(300))
     fin = Column(Integer)
 
-    dni_candidato = Column(Integer, ForeignKey('candidatos.dni'))
+    id_candidato = Column(Integer, ForeignKey('candidatos.id'))
 
 class Universitario(Base):
     __tablename__ = 'educacion_superior_universitario'
     id = Column(Integer, primary_key=True)
-    departamento = Column(String)
-    pais = Column(String)
+    departamento = Column(String(300))
+    pais = Column(String(300))
     concluido = Column(Boolean)
-    gradoTitulo = Column(String)
-    provincia = Column(String)
+    gradoTitulo = Column(String(300))
+    provincia = Column(String(300))
     fin = Column(Integer)
-    facultad = Column(String)
-    carrera = Column(String)
+    facultad = Column(String(300))
+    carrera = Column(String(300))
     inicio = Column(Integer)
-    instEducativa = Column(String)
-    distrito = Column(String)
+    instEducativa = Column(String(300))
+    distrito = Column(String(300))
 
-    dni_candidato = Column(Integer, ForeignKey('candidatos.dni'))
+    id_candidato = Column(Integer, ForeignKey('candidatos.id'))
 
 class Partidario(Base):
     __tablename__ = 'partidario'
     id = Column(Integer, primary_key=True)
-    cargo = Column(String)
-    ambito = Column(String)
+    cargo = Column(String(300))
+    ambito = Column(String(300))
     fin = Column(Integer)
-    orgPolitica = Column(String)
+    orgPolitica = Column(String(300))
     inicio = Column(Integer)
 
-    dni_candidato = Column(Integer, ForeignKey('candidatos.dni'))
+    id_candidato = Column(Integer, ForeignKey('candidatos.id'))
 
 class Eleccion(Base):
     __tablename__ = 'eleccion'
     id = Column(Integer, primary_key=True)
-    procesoElectoral = Column(String)
-    cargo = Column(String)
-    provincia = Column(String)
-    departamento = Column(String)
+    procesoElectoral = Column(String(300))
+    cargo = Column(String(300))
+    provincia = Column(String(300))
+    departamento = Column(String(300))
     inicio = Column(Integer)
     fin = Column(Integer)
-    distrito = Column(String)
-    ambito = Column(String)
-    orgPolitica = Column(String)
+    distrito = Column(String(300))
+    ambito = Column(String(300))
+    orgPolitica = Column(String(300))
 
-    dni_candidato = Column(Integer, ForeignKey('candidatos.dni'))
+    id_candidato = Column(Integer, ForeignKey('candidatos.id'))
 
 class Experiencia(Base):
     __tablename__ = 'experiencia'
     id = Column(Integer, primary_key=True)
-    sector = Column(String)
+    sector = Column(String(300))
     cargo = Column(Integer)
-    provincia = Column(String)
-    empleador = Column(String)
+    provincia = Column(String(300))
+    empleador = Column(String(300))
     inicio = Column(Integer)
-    distrito = Column(String)
-    fin = Column(String)
-    departamento = Column(String)
+    distrito = Column(String(300))
+    fin = Column(String(300))
+    departamento = Column(String(300))
 
-    dni_candidato = Column(Integer, ForeignKey('candidatos.dni'))
+    id_candidato = Column(Integer, ForeignKey('candidatos.id'))
 
 class Secundaria(Base):
     __tablename__ ='educacion_basica_secundaria'
     id = Column(Integer, primary_key=True)
     concluido = Column(Boolean)
-    provincia = Column(String)
-    departamento = Column(String)
-    distrito = Column(String)
+    provincia = Column(String(300))
+    departamento = Column(String(300))
+    distrito = Column(String(300))
     inicio = Column(Integer)
-    pais = Column(String)
-    instEducativa = Column(String)
+    pais = Column(String(300))
+    instEducativa = Column(String(300))
     fin = Column(Integer)
 
-    dni_candidato = Column(Integer, ForeignKey('candidatos.dni'))
+    id_candidato = Column(Integer, ForeignKey('candidatos.id'))
 
 class Primaria(Base):
     __tablename__ = 'educacion_basica_primaria'
     id = Column(Integer, primary_key=True)
     concluido = Column(Boolean)
-    provincia = Column(String)
-    departamento = Column(String)
-    distrito = Column(String)
+    provincia = Column(String(300))
+    departamento = Column(String(300))
+    distrito = Column(String(300))
     inicio = Column(Integer)
-    pais = Column(String)
-    instEducativa = Column(String)
+    pais = Column(String(300))
+    instEducativa = Column(String(300))
     fin = Column(Integer)
 
-    dni_candidato = Column(Integer, ForeignKey('candidatos.dni'))
+    id_candidato = Column(Integer, ForeignKey('candidatos.id'))
 
 def crea_candidato_object(dict_candidato):
     dict_campos = {
@@ -235,7 +238,7 @@ def crea_candidato_object(dict_candidato):
         "bienes_muebles": [BienMueble(**x) for x in dict_candidato["bienes"]["muebles"]] if dict_candidato["bienes"] and dict_candidato["bienes"]["muebles"] else [],
         "bienes_inmuebles": [BienInmueble(**x) for x in dict_candidato ["bienes"] ["inmuebles"]] if dict_candidato["bienes"] and dict_candidato["bienes"]["inmuebles"] else [],
         "otra_experiencia": [OtraExperiencia(**x) for x in dict_candidato["otraExperiencia"]] if dict_candidato["otraExperiencia"] else [],
-        "militancia": [Militancia(x) for x in dict_candidato["militancia"]] if  dict_candidato["militancia"] else [],
+        "militancia": [Militancia(**x) for x in dict_candidato["militancia"]] if  dict_candidato["militancia"] else [],
         "civil": [Civil(**x) for x in dict_candidato["civil"]] if dict_candidato["civil"] else [],
         "educacion_basica_primaria": [Primaria(**x) for x in dict_candidato["educacionBasica"]["primaria"]] if dict_candidato["educacionBasica"] and dict_candidato["educacionBasica"]["primaria"] else [],
         "educacion_basica_secundaria": [Secundaria(**x) for x in dict_candidato["educacionBasica"]["secundaria"]] if dict_candidato["educacionBasica"] and dict_candidato["educacionBasica"]["secundaria"] else [],
@@ -246,13 +249,22 @@ def crea_candidato_object(dict_candidato):
         "eleccion": [Eleccion(**x) for x in dict_candidato["eleccion"]] if dict_candidato["eleccion"] else [],
         "experiencia": [Experiencia(**x) for x in dict_candidato["experiencia"]] if dict_candidato["experiencia"] else [],
     }
+
     dict_campos.update(dict_candidato["datosPersonales"])
-    dict_campos.update(dict_candidato["familia"])
+    if dict_candidato["familia"]:
+        dict_campos.update(dict_candidato["familia"])
+
     for key,value in dict_candidato["postulacion"].iteritems():
         dict_campos["postulacion_" + key] = value
 
+        dict_fecha_nac = dict_candidato["nacimiento"]["fecha"]
+
     for key,value in dict_candidato["nacimiento"].iteritems():
-        dict_campos["nacimiento_" + key] = value
+        if key=="fecha":
+            dict_fecha = value
+            dict_campos["nacimiento_fecha"] = date(value["y"], value["m"], value["d"])
+        else:
+            dict_campos["nacimiento_" + key] = value
 
     for key,value in dict_candidato["residencia"].iteritems():
         dict_campos["residencia_" + key] = value
@@ -260,8 +272,13 @@ def crea_candidato_object(dict_candidato):
     candidato_object = Candidato(**dict_campos)
     return candidato_object
 
-def mongo_to_sqlalchemy(client=MongoClient(), db="candidatos", colleccion="candLimpio"):
-    collect = client.db.collect
-    cursor = collect.find({"ok":True})
+def mongo_to_sqlalchemy(client=MongoClient(), db="candidatos", coleccion="candLimpio"):
+    collect = client[db][coleccion]
+    cursor = collect.find({"ok":True}).sort("_id", ASCENDING)
     for cand in cursor:
-        Base.add(crear_candidato_object(cand))
+        cand_id = cand["_id"]
+        session.add(crea_candidato_object(cand))
+        if not cand_id % 2000:
+            print "Procesado: %d"%cand_id
+            session.commit()
+    session.commit()
