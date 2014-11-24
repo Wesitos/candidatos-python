@@ -16,7 +16,7 @@ class Candidato(Base):
     id = Column(Integer, primary_key=True)
 
     # Datos Personales
-    dni = Column(Integer)
+    dni = Column(String(8))
     nombres = Column(String(300))
     apellidoMaterno = Column(String(300))
     apellidoPaterno = Column(String(300))
@@ -65,6 +65,7 @@ class Candidato(Base):
     partidario = relationship("Partidario", backref="candidato")
     eleccion = relationship("Eleccion", backref="candidato")
     experiencia = relationship("Experiencia", backref="candidato")
+    observaciones = relationship("Observacion", backref="candidato")
 
 class BienMueble(Base):
     __tablename__ = 'bienes_muebles'
@@ -141,7 +142,7 @@ class Tecnico(Base):
     especialidad = Column(String(300))
     departamento = Column(String(300))
     inicio = Column(Integer)
-    pais = Column(Integer)
+    pais = Column(String(300))
     instEducativa = Column(String(300))
     fin = Column(Integer)
 
@@ -232,6 +233,14 @@ class Primaria(Base):
 
     id_candidato = Column(Integer, ForeignKey('candidatos.id'))
 
+class Observacion(Base):
+    __tablename__ = 'observaciones'
+    id = Column(Integer, primary_key=True)
+    referencia = Column(String(300))
+    anotacion = Column(String(2000))
+
+    id_candidato = Column(Integer, ForeignKey('candidatos.id'))
+
 def crea_candidato_object(dict_candidato):
     dict_campos = {
         "id": dict_candidato["_id"],
@@ -248,9 +257,12 @@ def crea_candidato_object(dict_candidato):
         "partidario": [Partidario(**x) for x in dict_candidato["partidario"]] if dict_candidato["partidario"] else [],
         "eleccion": [Eleccion(**x) for x in dict_candidato["eleccion"]] if dict_candidato["eleccion"] else [],
         "experiencia": [Experiencia(**x) for x in dict_candidato["experiencia"]] if dict_candidato["experiencia"] else [],
+        "observaciones": [Observacion(**x) for x in dict_candidato["observaciones"]] if dict_candidato["observaciones"] else [],
     }
 
     dict_campos.update(dict_candidato["datosPersonales"])
+    dict_campos["dni"] = str(dict_campos["dni"]).zfill(8)
+
     if dict_candidato["familia"]:
         dict_campos.update(dict_candidato["familia"])
 
@@ -272,13 +284,16 @@ def crea_candidato_object(dict_candidato):
     candidato_object = Candidato(**dict_campos)
     return candidato_object
 
+def crea_esquemas():
+    Base.metadata.create_all(engine)
+
 def mongo_to_sqlalchemy(client=MongoClient(), db="candidatos", coleccion="candLimpio"):
     collect = client[db][coleccion]
     cursor = collect.find({"ok":True}).sort("_id", ASCENDING)
     for cand in cursor:
         cand_id = cand["_id"]
         session.add(crea_candidato_object(cand))
-        if not cand_id % 2000:
+        if not cand_id % 1000:
             print "Procesado: %d"%cand_id
             session.commit()
     session.commit()
