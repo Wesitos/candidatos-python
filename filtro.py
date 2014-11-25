@@ -198,7 +198,7 @@ class Filtro (object):
 
                 lista_tecnico.append(dic_tecnico)
 
-            if (item["objTipoEstudioBE"]["intTipo"] == 3):
+            elif (item["objTipoEstudioBE"]["intTipo"] == 3):
                 # Universitario
                 ubi_BE = item["objUbigeoBE"]
                 if(item["strFgExtranjero"] == "1"):
