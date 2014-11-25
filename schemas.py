@@ -242,6 +242,28 @@ class Observacion(Base):
     id_candidato = Column(Integer, ForeignKey('candidatos.id'))
 
 def crea_candidato_object(dict_candidato):
+    # Arreglo de bug de estudios duplicados
+    # Campos duplicados: especialidad, fin, inicio, instEducativa, pais
+    # Campos en postgrado: gradoTitulo : ""; tipo: None
+    postgrado_dirty = dict_candidato["educacionSuperior"]["postgrado"]
+    tecnico_list = dict_candidato["educacionSuperior"]["tecnico"]
+
+    postgrado_clean = []
+    for item in postgrado_dirty:
+        if item["tipo"] == None and item["gradoTitulo"]=='':
+            dict_prueba_post = { key:item[key]
+                                 for key in ["especialidad", "fin","inicio","instEducativa","pais"]}
+            list_prueba_tec =  [{ key:d[key]
+                                 for key in ["especialidad",
+                                            "fin",
+                                            "inicio",
+                                            "instEducativa",
+                                            "pais"]} for d in tecnico_list]
+            if dict_prueba_post not in list_prueba_tec:
+                postgrado_clean.append(item)
+        else:
+            postgrado_clean.append(item)
+
     dict_campos = {
         "id": dict_candidato["_id"],
         "bienes_muebles": [BienMueble(**x) for x in dict_candidato["bienes"]["muebles"]] if dict_candidato["bienes"] and dict_candidato["bienes"]["muebles"] else [],
@@ -251,7 +273,7 @@ def crea_candidato_object(dict_candidato):
         "civil": [Civil(**x) for x in dict_candidato["civil"]] if dict_candidato["civil"] else [],
         "educacion_basica_primaria": [Primaria(**x) for x in dict_candidato["educacionBasica"]["primaria"]] if dict_candidato["educacionBasica"] and dict_candidato["educacionBasica"]["primaria"] else [],
         "educacion_basica_secundaria": [Secundaria(**x) for x in dict_candidato["educacionBasica"]["secundaria"]] if dict_candidato["educacionBasica"] and dict_candidato["educacionBasica"]["secundaria"] else [],
-        "educacion_superior_postgrado": [Postgrado(**x) for x in dict_candidato["educacionSuperior"]["postgrado"]] if dict_candidato["educacionSuperior"] and dict_candidato["educacionSuperior"]["postgrado"] else [],
+        "educacion_superior_postgrado": [Postgrado(**x) for x in postgrado_clean],
         "educacion_superior_universitario": [Universitario(**x) for x in dict_candidato["educacionSuperior"]["universitario"]] if dict_candidato["educacionSuperior"] and dict_candidato["educacionSuperior"]["universitario"] else [],
         "educacion_superior_tecnico": [Tecnico(**x) for x in dict_candidato["educacionSuperior"]["tecnico"]] if dict_candidato["educacionSuperior"] and dict_candidato["educacionSuperior"]["tecnico"] else [],
         "partidario": [Partidario(**x) for x in dict_candidato["partidario"]] if dict_candidato["partidario"] else [],
