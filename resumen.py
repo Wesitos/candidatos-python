@@ -33,20 +33,33 @@ def make_cand_resumen(cand_dict):
         primaria = []
         secundaria = []
 
+
     if cand_dict["educacionSuperior"]:
-        tecnico = cand_dict["educacionSuperior"]["tecnico"]
-        universitario = cand_dict["educacionSuperior"]["universitario"]
-        postgrado = cand_dict["educacionSuperior"]["postgrado"]
-        if tecnico == None:
-            tecnico = []
-        if universitario == None:
-            universitario = []
-        if postgrado == None:
-            postgrado = []
+        universitario = cand_dict["educacionSuperior"]["universitario"] if cand_dict["educacionSuperior"]["universitario"] else []
+        postgrado_dirty = cand_dict["educacionSuperior"]["postgrado"] if cand_dict["educacionSuperior"]["postgrado"] else []
+        tecnico = cand_dict["educacionSuperior"]["tecnico"] if cand_dict["educacionSuperior"]["tecnico"] else []
     else:
+        postgrado_dirty = []
         tecnico = []
         universitario = []
-        postgrado = []
+
+    postgrado = []
+    for item in postgrado_dirty:
+        if item["tipo"] == None and item["gradoTitulo"]=='':
+            dict_prueba_post = { key:item[key]
+                                 for key in ["especialidad", "fin","inicio","instEducativa","pais"]}
+            list_prueba_tec =  [{ key:d[key]
+                                 for key in ["especialidad",
+                                            "fin",
+                                            "inicio",
+                                            "instEducativa",
+                                            "pais"]} for d in tecnico]
+            if dict_prueba_post not in list_prueba_tec:
+                postgrado.append(item)
+        else:
+            postgrado.append(item)
+
+
 
     ed_concluido = lambda ed_list: reduce(lambda x,y: x or y,
                                           map(lambda d: d["concluido"],ed_list), 0) if ed_list else ""

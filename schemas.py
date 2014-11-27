@@ -245,8 +245,12 @@ def crea_candidato_object(dict_candidato):
     # Arreglo de bug de estudios duplicados
     # Campos duplicados: especialidad, fin, inicio, instEducativa, pais
     # Campos en postgrado: gradoTitulo : ""; tipo: None
-    postgrado_dirty = dict_candidato["educacionSuperior"]["postgrado"]
-    tecnico_list = dict_candidato["educacionSuperior"]["tecnico"]
+    if dict_candidato["educacionSuperior"]:
+        postgrado_dirty = dict_candidato["educacionSuperior"]["postgrado"] if dict_candidato["educacionSuperior"]["postgrado"] else []
+        tecnico_list = dict_candidato["educacionSuperior"]["tecnico"] if dict_candidato["educacionSuperior"]["tecnico"] else []
+    else:
+        postgrado_dirty = []
+        tecnico_list = []
 
     postgrado_clean = []
     for item in postgrado_dirty:
