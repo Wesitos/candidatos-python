@@ -1,0 +1,14 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+requests = "==2.2.1"
+requesocks = "==0.10.8"
+pymongo = "==2.7.1"
+
+[dev-packages]
+
+[requires]
+python_version = "2.7"
