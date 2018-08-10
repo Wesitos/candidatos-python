@@ -19,7 +19,7 @@ _tor_proxies = {'http': 'socks5://127.0.0.1:9050',
                 'https': 'socks5://127.0.0.1:9050'}
 
 lock_print = threading.Lock()
-_base_url = "http://200.48.102.67/pecaoe/servicios/"
+_base_url = "http://aplicaciones013.jne.gob.pe/pecaoe/servicios/"
 _dic_urls = {
     "principal": (_base_url + "declaracion.asmx/" +
                   "CandidatoListarPorID"),
